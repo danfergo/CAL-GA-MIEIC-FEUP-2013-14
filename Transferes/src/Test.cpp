@@ -15,6 +15,7 @@ void runSuite(){
 }
 
 int main(){
+	cout << "hello project" <<endl;
     runSuite();
     return 0;
 }
