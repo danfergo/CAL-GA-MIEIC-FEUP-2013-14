@@ -1,6 +1,3 @@
-[submodule "Trasnferes/src/libs/tui"]
-	path = Trasnferes/src/libs/tui
-	url = https://github.com/danfergo/TUI_TextUserInterface.git
 [submodule "Transferes/src/libs/tui"]
 	path = Transferes/src/libs/tui
 	url = https://github.com/danfergo/TUI_TextUserInterface.git
