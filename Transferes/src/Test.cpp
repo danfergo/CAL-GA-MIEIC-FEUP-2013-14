@@ -14,8 +14,7 @@ void runSuite(){
 	cute::makeRunner(lis)(s, "The Suite");
 }
 
-int main(){
-	cout << "hello project" <<endl;
+int test_main(){
     runSuite();
     return 0;
 }
