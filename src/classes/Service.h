@@ -15,6 +15,7 @@ private:
 	unsigned dropoff;
 public:
 	Local * local;
+	unsigned qtdPessoas;
 
 	Service(unsigned, Local *);
 
