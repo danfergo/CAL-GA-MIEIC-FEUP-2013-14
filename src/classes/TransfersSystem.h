@@ -20,16 +20,21 @@ static const unsigned overhead = 60;
 
 class TransfersSystem {
 private:
+	unsigned busStocking;
 	Graph<Local> locals;
 	std::vector<Service> services;
 
+	bool calcSimplePathRecursive(std::vector<Service *> & services2plane,
+			std::stack<Service *> & ret);
 public:
 	TransfersSystem();
 	bool addDataFromFile(std::string filename);
 	void clearData();
-	bool calcSimplePath(std::vector<Service *> & services2plane, std::stack<Service *> & ret);
-	std::vector<std::vector<Service *> > calcComplexPath(std::vector<Service *> services);
-	std::vector< std::vector< std::vector<Service *> > > planTransfers();
+	bool calcSimplePath(std::vector<Service *> & services2plane,
+			std::stack<Service *> & ret);
+	std::vector<std::vector<Service *> > calcComplexPath(
+			std::vector<Service *> services);
+	std::vector<std::vector<std::vector<Service *> > > planTransfers();
 };
 
 #endif /* PLAN_H_ */
