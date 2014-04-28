@@ -9,18 +9,26 @@
 #define SERVICE_H_
 
 #include "Local.h"
+#include "Map.h"
 
 class Service {
 private:
-	unsigned dropoff;
-public:
+	unsigned soonerTime;
+	unsigned laterTime;
+
+	unsigned arrivalTime;
 	Local * local;
-	unsigned qtdPessoas;
+	unsigned peopleQuantity;
+public:
+	Service(unsigned peopleQuantity, unsigned arrival, Local * local, Map * map);
+	bool operator==(const Service & s) const;
 
-	Service(unsigned, Local *);
+	unsigned getSoonerTime() const;
+	unsigned getLaterTime() const;
+	unsigned getArrivalTime() const;
 
-	unsigned getDropoff() const;
-	void setDropoff(unsigned);
+	unsigned getPeopleQuantity() const;
+	Local * getLocal() const;
 };
 
 #endif /* SERVICE_H_ */

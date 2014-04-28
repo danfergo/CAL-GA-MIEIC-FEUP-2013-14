@@ -13,12 +13,12 @@
 class Local {
 private:
 	std::string name;
-
 public:
 	Local(std::string);
 
 	std::string getName() const;
 	void setName(std::string);
+	bool operator==(const Local & loc) const;
 };
 
 #endif /* LOCAL_H_ */

@@ -7,7 +7,7 @@
 #include <vector>
 #include <queue>
 #include <list>
-#include <limits>
+#include <limits.h>
 #include <cmath>
 #include <iostream>
 using namespace std;
@@ -204,7 +204,9 @@ struct edge_greater_than {
  */
 template <class T>
 class Graph {
+protected:
 	vector<Vertex<T> *> vertexSet;
+private:
 	void dfs(Vertex<T> *v, vector<T> &res) const;
 
 	//exercicio 5
@@ -229,7 +231,7 @@ public:
 	int getNumVertex() const;
 
 	//exercicio 5
-	Vertex<T>* getVertex(const T &v) const;
+	Vertex<T>* 	getVertex(const T &v) const;
 	void resetIndegrees();
 	vector<Vertex<T>*> getSources() const;
 	int getNumCycles();
@@ -758,7 +760,7 @@ int Graph<T>::edgeCost(int vOrigIndex, int vDestIndex)
 	return INT_INFINITY;
 }
 
-
+/*
 void printSquareArray(int ** arr, unsigned int size)
 {
 	for(unsigned int k = 0; k < size; k++)
@@ -785,7 +787,7 @@ void printSquareArray(int ** arr, unsigned int size)
 		cout << endl;
 	}
 }
-
+*/
 
 template<class T>
 void Graph<T>::floydWarshallShortestPath() {

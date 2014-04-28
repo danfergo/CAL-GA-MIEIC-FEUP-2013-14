@@ -17,3 +17,8 @@ std::string Local::getName() const{
 void Local::setName(std::string n){
 	name = n;
 }
+
+
+bool Local::operator==(const Local & loc) const{
+	return getName() == loc.getName();
+}
