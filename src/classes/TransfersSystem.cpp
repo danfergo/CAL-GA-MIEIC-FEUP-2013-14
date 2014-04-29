@@ -46,7 +46,7 @@ Service * popService(std::vector<Service *> & vec2search,
 	return NULL;
 }
 bool TransfersSystem::calcSimplePathRecursive(std::vector<Service *> & srvsLeft,
-		unsigned min, unsigned max, unsigned previousDist, Service * lastSrv,
+		int min, int max, unsigned previousDist, Service * lastSrv,
 		std::queue<Service *> & ret) {
 
 	if (srvsLeft.size() == 0) // 1. if N is a goal state/node, return “success”
@@ -56,7 +56,7 @@ bool TransfersSystem::calcSimplePathRecursive(std::vector<Service *> & srvsLeft,
 
 	std::vector<Service *> clnServices(srvsLeft);
 	Service * tmpSrv;
-	unsigned nMin, nMax, tmpDist;
+	int nMin, nMax, tmpDist;
 
 	std::vector<Service *>::iterator it = clnServices.begin(); //3. for each successor/child C of N,
 	for (; it != clnServices.end(); it++) {
@@ -118,13 +118,10 @@ bool TransfersSystem::calcSimplePath(std::vector<Service *> services2plane,
 	ret.empty(); // ensuring that the queue is empty
 	return calcSimplePathRecursive(services2plane, 0, 0, 0, NULL, ret);
 }
-unsigned x = 0;
 bool TransfersSystem::calcComplexPathRecursive(
-		std::vector<Service *> & srvsLeft, unsigned min, unsigned max,
+		std::vector<Service *> & srvsLeft, int min, int max,
 		unsigned previousDist, unsigned previousStck, Service * lastSrv,
 		std::queue<Service *> & ret) {
-	x++;
-	std::cout << x << endl;
 	if (srvsLeft.size() == 0)  // 1. if N is a goal state/node, return “success”
 		return true;
 
@@ -133,7 +130,7 @@ bool TransfersSystem::calcComplexPathRecursive(
 	std::vector<Service *> clnServices(srvsLeft);
 	Service * tmpSrv;
 	std::vector<Edge<Local> > edges;
-	unsigned nMin, nMax, tmpDist;
+	int nMin, nMax, tmpDist;
 
 	for (std::vector<Service *>::iterator it = clnServices.begin(); //3. for each successor/child C of N,
 	it != clnServices.end(); it++) {
@@ -159,6 +156,7 @@ bool TransfersSystem::calcComplexPathRecursive(
 				nMax = tmpSrv->getArrivalTime() - tmpDist - previousDist;
 				nMin = absSoonerTime(tmpSrv);
 				if (nMin <= nMax) {
+
 					nMax = nMax < (max - tmpDist) ? nMax : (max - tmpDist);
 					nMin = nMin > (min - tmpDist) ? nMin : (min - tmpDist);
 					if (nMin <= nMax) { // Possible to explore
@@ -183,9 +181,7 @@ bool TransfersSystem::calcComplexPathRecursive(
 	// tries to drop people.
 	if (lastSrv != NULL && !(*lastSrv == *dropPeople)) {
 		tmpDist = locals.getBestTravelTime(lastSrv->getLocal());
-		cout <<  lastSrv->getArrivalTime() << endl;
-
-		if (calcComplexPathRecursive(srvsLeft, INT_MIN, max - tmpDist, 0,
+		if (calcComplexPathRecursive(srvsLeft, -999999, max - tmpDist, 0,
 				0, dropPeople, ret)) {
 			ret.push(dropPeople);
 			return true;

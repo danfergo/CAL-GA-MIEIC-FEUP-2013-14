@@ -141,37 +141,72 @@
  */
 
 TextUserInterface tui("Tema 6: Planemanento de Transfers", 70, 15);
-TransfersSystem ts(60,30);
+TransfersSystem ts(60, 30);
 void readDataFile() {
-	string loc = tui.print(
-			"O ficheiro deve seguir o seguinte formato: \n\n"
-			"Local \n"
-			"morada_do_local \n"
-			"morada_do_local \n"
-			"Distance\n"
-			"id_loc;id_loc;distancia\n"
-			"id_loc;id_loc;distancia\n"
-			"Service\n"
-			"id_loc_partida;nr_passageiros;dropoff;\n"
-			"id_loc_partida;nr_passageiros;dropoff;\n\n"
-			"Notas: id_loc é a ordem do nome do local no ficheiro. A distancia \n"
-			"e o dropoff em minutos."
-			"",TextUserInterface::LEFT,"Introduza a localização do ficheiro:");
-	if(ts.addDataFromFile(loc))
+	string loc =
+			tui.print(
+					"O ficheiro deve seguir o seguinte formato: \n\n"
+							"Local \n"
+							"morada_do_local \n"
+							"morada_do_local \n"
+							"Distance\n"
+							"id_loc;id_loc;distancia\n"
+							"id_loc;id_loc;distancia\n"
+							"Service\n"
+							"id_loc_partida;nr_passageiros;dropoff;\n"
+							"id_loc_partida;nr_passageiros;dropoff;\n\n"
+							"Notas: id_loc é a ordem do nome do local no ficheiro. A distancia \n"
+							"e o dropoff em minutos."
+							"", TextUserInterface::LEFT,
+					"Introduza a localização do ficheiro:");
+	if (ts.addDataFromFile(loc))
 		tui.print("A informação foi importada com sucesso.");
 	else
 		tui.print("Não foi possivel importar o ficheiro desejado.");
 
 }
+void changeSettings() {
+	unsigned op;
+	stringstream s;
+
+	while (op =
+			tui.printMenu(
+					"Alterar Overhead \nAlterar lotação máxima dos autocarros \nVoltar ao menu anterior")) {
+		if (op == 1) {
+			ts.setOverhead(
+					tui.printInt(
+							"Introduza um valor maximo de overhead.\n"
+									"Entende-se por overhead o tempo entre o tempo de \n"
+									"recolha mais tarde possivel e o efetuado (em minutos)."
+									"\n", "Introduza um valor entre 0 e 360:",
+							0, 360));
+			s.str("");
+			s << "O overhead é agora:" << ts.getOverhead();
+			tui.print(s.str());
+		} else if (op == 2) {
+			ts.setBusStocking(
+			 tui.printInt(
+			 "Introduza um valor maximo para a lotação dos autocarros.\n"
+			 "\n", "Introduza um valor entre 0 e 250:",
+			 0, 250));
+
+			s.str("");
+			s << "A lotação máxima dos autocarros é agora: \n" << ts.getBusStocking();
+			tui.print(s.str());
+
+		}
+	}
+}
 
 void mainAppMenu() {
 	unsigned op;
-	while (op = tui.printMenu(
-			"Importar dados \nAlterar Restrições \nSobre \nSair")) {
+	while (op =
+			tui.printMenu(
+					"Importar dados \nAlterar Restrições \nSobre \nVoltar ao menu anterior")) {
 		if (op == 1)
 			readDataFile();
 		else if (op == 2)
-			tui.print("Por fazer..");
+			changeSettings();
 		else if (op == 3)
 			tui.print(
 					"Projeto desenvolvido no ambito da unidade curricular de Concepção e Analise de Algoritos @ Feup @ 2014....");

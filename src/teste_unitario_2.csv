@@ -30,4 +30,3 @@ Service (partida_id->Local, nr passageiros,dropoff(hora*60+minutos) );
 4;1;660
 5;1;660
 1;1;900
-2;1;915

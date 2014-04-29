@@ -32,6 +32,7 @@ unsigned Map::getTravelTimeBetween(Local * v1, Local * v2) {
 		if ((*itt).getDest()->getInfo() == v2) {
 			return (*itt).getWeight();
 		}
+
 	}
 	return INT_MAX;
 }

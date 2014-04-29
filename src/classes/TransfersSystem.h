@@ -24,10 +24,10 @@ private:
 	std::vector<Service *> services;
 	Service * dropPeople;
 
-	bool calcSimplePathRecursive(std::vector<Service*>& srvsLeft, unsigned min,
-			unsigned max, unsigned previousDist, Service* lastSrv,
+	bool calcSimplePathRecursive(std::vector<Service*>& srvsLeft, int min,
+			int max, unsigned previousDist, Service* lastSrv,
 			std::queue<Service*>& ret) ;
-	bool calcComplexPathRecursive(std::vector<Service *> & srvsLeft, unsigned min, unsigned max, unsigned dist , unsigned stocking, Service * lastSrv,
+	bool calcComplexPathRecursive(std::vector<Service *> & srvsLeft, int min, int max, unsigned dist , unsigned stocking, Service * lastSrv,
 				std::queue<Service *> & ret);
 public:
 	TransfersSystem(unsigned busStocking, unsigned overhead);
@@ -48,7 +48,22 @@ public:
 
 	const Map & getMap() const{
 			return locals;
-		}
+	}
+	unsigned getOverhead() const{
+		return overhead;
+	}
+
+	unsigned getBusStocking() const{
+		return busStocking;
+	}
+
+	void setOverhead(unsigned oh){
+		overhead = oh;
+	}
+	void setBusStocking(unsigned bs){
+		busStocking = bs;
+	}
+
 };
 
 #endif /* PLAN_H_ */
