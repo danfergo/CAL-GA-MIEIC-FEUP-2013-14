@@ -1,0 +1,16 @@
+Local (id_localizacao, morada)
+Aeroporto Francisco Sá Carneiro, 4470-558 Maia
+Faculdade de Engenharia da Universidade do Porto, 
+Rua Doutor Roberto Frias, 4200-465 Porto
+Rua da Cerca, 454-4150 Porto
+Rua Fernão Lopes, 409-4150 Porto
+
+Distance (localizacao1, localizacao2, distancia - minutos )
+1;4;16
+1;2;15
+1;3;17
+
+
+Service (partida_id->Local, nr passageiros,hora(hora*60+minutos) );
+0;20;23400
+2;13;15:30
