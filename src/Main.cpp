@@ -185,13 +185,14 @@ void changeSettings() {
 			tui.print(s.str());
 		} else if (op == 2) {
 			ts.setBusStocking(
-			 tui.printInt(
-			 "Introduza um valor maximo para a lotação dos autocarros.\n"
-			 "\n", "Introduza um valor entre 0 e 250:",
-			 0, 250));
+					tui.printInt(
+							"Introduza um valor maximo para a lotação dos autocarros.\n"
+									"\n", "Introduza um valor entre 0 e 250:",
+							0, 250));
 
 			s.str("");
-			s << "A lotação máxima dos autocarros é agora: \n" << ts.getBusStocking();
+			s << "A lotação máxima dos autocarros é agora: \n"
+					<< ts.getBusStocking();
 			tui.print(s.str());
 
 		}
@@ -200,16 +201,48 @@ void changeSettings() {
 
 void mainAppMenu() {
 	unsigned op;
+	bool r;
+	stringstream s;
+	queue<Service *> ret;
 	while (op =
 			tui.printMenu(
-					"Importar dados \nAlterar Restrições \nSobre \nVoltar ao menu anterior")) {
+					"Importar dados \nPlanear Serviços com caminho simples \nPlanear Serviços com caminho complexo  \nAlterar Restrições \nSobre \nVoltar ao menu anterior")) {
 		if (op == 1)
 			readDataFile();
-		else if (op == 2)
+		else if (op == 2) {
+			if (ts.calcSimplePath(ts.getServices(), ret)) {
+				s.str("");
+				while (!ret.empty()) {
+					s << ret.front()->getLocal()->getName() << "\n";
+					ret.pop();
+				}
+				tui.print(s.str());
+			} else
+				tui.print(
+						"Não foi possivel calcular um caminho para os serviços existentes");
+		} else if (op == 3) {
+			if (ts.calcSimplePath(ts.getServices(), ret)) {
+				s.str("");
+				while (!ret.empty()) {
+					s << ret.front()->getLocal()->getName() << "\n";
+					ret.pop();
+				}
+				tui.print(s.str());
+			} else
+				tui.print(
+						"Não foi possivel calcular um caminho para os serviços existentes");
+		} else if (op == 4)
 			changeSettings();
-		else if (op == 3)
-			tui.print(
-					"Projeto desenvolvido no ambito da unidade curricular de Concepção e Analise de Algoritos @ Feup @ 2014....");
+		else if (op == 5)
+			tui.print("Aplicação para planemamento de trasnfers, desenvolvido\n"
+					"no ambito da unidade curricular de \n"
+					"Concepção e Analise de Algoritos. \n"
+					"\n"
+					"Por:\n"
+					"Daniel Fernandes Gomes \n"
+					"Diogo Alexandre Soares Gomes \n"
+					"Pedro Almeida Santiago");
+
 	}
 }
 

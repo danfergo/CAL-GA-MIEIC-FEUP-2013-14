@@ -106,6 +106,10 @@ bool TransfersSystem::calcSimplePathRecursive(std::vector<Service *> & srvsLeft,
 
 bool TransfersSystem::calcSimplePath(std::vector<Service *> services2plane,
 		std::queue<Service *> & ret) {
+
+	if(locals.getNumVertex() == 0)
+		return false;
+
 	unsigned stocking = 0;
 	for (std::vector<Service *>::iterator it = services2plane.begin();
 			it != services2plane.end(); it++) {
@@ -118,6 +122,7 @@ bool TransfersSystem::calcSimplePath(std::vector<Service *> services2plane,
 	ret.empty(); // ensuring that the queue is empty
 	return calcSimplePathRecursive(services2plane, 0, 0, 0, NULL, ret);
 }
+
 bool TransfersSystem::calcComplexPathRecursive(
 		std::vector<Service *> & srvsLeft, int min, int max,
 		unsigned previousDist, unsigned previousStck, Service * lastSrv,
@@ -195,6 +200,9 @@ bool TransfersSystem::calcComplexPathRecursive(
 
 bool TransfersSystem::calcComplexPath(std::vector<Service *> services,
 		std::queue<Service *> & ret) {
+	if(locals.getNumVertex() == 0)
+		return false;
+
 	for (std::vector<Service *>::iterator it = services.begin();
 			it != services.end(); it++) {
 		if (busStocking < (*it)->getPeopleQuantity()) {
