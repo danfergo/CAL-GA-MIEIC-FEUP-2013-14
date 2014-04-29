@@ -7,9 +7,7 @@
 
 #include "Map.h"
 
-Map::Map(Local * airport) {
-	this->addVertex(airport);
-	this->airport = getVertex(airport);
+Map::Map() {
 }
 
 unsigned Map::getBestTravelTime(Local *v) {
@@ -39,5 +37,17 @@ unsigned Map::getTravelTimeBetween(Local * v1, Local * v2) {
 }
 
 Local * Map::getAirportLocal(){
-	return airport->getInfo();
+	if(vertexSet.size() == 0)
+		return NULL;
+	return this->vertexSet[0]->getInfo();
 }
+
+void Map::resetMap(){
+	vertexSet.clear();
+}
+
+
+bool Map::isEmpty(){
+	return vertexSet.size() == 0;
+}
+

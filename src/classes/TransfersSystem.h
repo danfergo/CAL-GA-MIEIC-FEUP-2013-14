@@ -21,7 +21,7 @@ private:
 	unsigned overhead;
 	Map locals;
 	unsigned busStocking;
-	std::vector<Service> services;
+	std::vector<Service *> services;
 	Service * dropPeople;
 
 	bool calcSimplePathRecursive(std::vector<Service*>& srvsLeft, unsigned min,
@@ -30,7 +30,7 @@ private:
 	bool calcComplexPathRecursive(std::vector<Service *> & srvsLeft, unsigned min, unsigned max, unsigned dist , unsigned stocking, Service * lastSrv,
 				std::queue<Service *> & ret);
 public:
-	TransfersSystem(Local * airport,unsigned busStocking, unsigned overhead);
+	TransfersSystem(unsigned busStocking, unsigned overhead);
 	bool addDataFromFile(std::string filename);
 	void clearData();
 	bool calcSimplePath(std::vector<Service *> services2plan,
@@ -38,9 +38,17 @@ public:
 	unsigned absSoonerTime(Service *);
 	unsigned absLatterTime(Service *);
 
-	std::vector<std::vector<Service *> > calcComplexPath(
-			std::vector<Service *> services);
+	bool calcComplexPath(
+			std::vector<Service *> services,std::queue<Service *> & ret) ;
 	std::vector<std::vector<std::vector<Service *> > > planTransfers();
+
+	const std::vector<Service *> & getServices() const{
+		return services;
+	}
+
+	const Map & getMap() const{
+			return locals;
+		}
 };
 
 #endif /* PLAN_H_ */

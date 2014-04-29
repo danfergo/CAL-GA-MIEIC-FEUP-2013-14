@@ -12,26 +12,24 @@
 #include <fstream>
 
 #include <stdlib.h>     /* atoi */
-
-TransfersSystem::TransfersSystem(Local * airport, unsigned stocking,unsigned overhead) :
-		overhead(60), locals(airport), busStocking(stocking) {
-	dropPeople = new Service(0, 0, locals.getAirportLocal());
+#include <limits.h>
+TransfersSystem::TransfersSystem(unsigned stocking, unsigned overhead) :
+		overhead(60), locals(), busStocking(stocking) {
 }
 
 unsigned TransfersSystem::absSoonerTime(Service * s) {
-	return s->getArrivalTime() - locals.getBestTravelTime(s->getLocal());
-}
-
-unsigned TransfersSystem::absLatterTime(Service * s) {
 	return s->getArrivalTime() - locals.getBestTravelTime(s->getLocal())
 			- overhead;
 }
 
-bool addDataFromFile(std::string filename) {
-	return true;
+unsigned TransfersSystem::absLatterTime(Service * s) {
+	return s->getArrivalTime() - locals.getBestTravelTime(s->getLocal());
 }
 
 void TransfersSystem::clearData() {
+	locals.resetMap();
+	services.clear();
+	dropPeople = NULL;
 }
 
 Service * popService(std::vector<Service *> & vec2search,
@@ -47,48 +45,47 @@ Service * popService(std::vector<Service *> & vec2search,
 	}
 	return NULL;
 }
-
-
 bool TransfersSystem::calcSimplePathRecursive(std::vector<Service *> & srvsLeft,
 		unsigned min, unsigned max, unsigned previousDist, Service * lastSrv,
 		std::queue<Service *> & ret) {
 
-	if (srvsLeft.size() == 0)  // 1. if N is a goal state/node, return “success”
+	if (srvsLeft.size() == 0) // 1. if N is a goal state/node, return “success”
 		return true;
 
 	// 2. (optional) if N is a leaf state/node, return “failure”
 
 	std::vector<Service *> clnServices(srvsLeft);
 	Service * tmpSrv;
-	unsigned nMin, nMax, tempDist;
+	unsigned nMin, nMax, tmpDist;
 
 	std::vector<Service *>::iterator it = clnServices.begin(); //3. for each successor/child C of N,
-	for (;  it != clnServices.end(); it++) {
+	for (; it != clnServices.end(); it++) {
 		//3.1. (if appropriate) set new state
-		tmpSrv = popService(srvsLeft,it);
+		tmpSrv = popService(srvsLeft, it);
 
 		//3.2. explore state/node C
 		//3.3. if exploration was successful, return “success”
-
 		if (lastSrv == NULL) {
-			tempDist = locals.getBestTravelTime(tmpSrv->getLocal());
+
+			tmpDist = locals.getBestTravelTime(tmpSrv->getLocal());
 			if (calcSimplePathRecursive(srvsLeft, absSoonerTime(tmpSrv),
-					absLatterTime(tmpSrv), tempDist, tmpSrv, ret)) {
+					absLatterTime(tmpSrv), tmpDist, tmpSrv, ret)) {
 				ret.push(tmpSrv);
 				return true;
 			}
-		} else {
-			tempDist = locals.getTravelTimeBetween(lastSrv->getLocal(),
-					(*it)->getLocal());
 
-			nMax = (*it)->getArrivalTime() - tempDist - previousDist;
-			nMin = absSoonerTime((*it));
-			if (nMin < nMax) {
-				nMax = nMax < max - previousDist ? nMax : max - previousDist;
-				nMin = nMin > min - previousDist ? nMin : min - previousDist;
-				if (nMin < nMax) { // Possible to explore
-					if (calcSimplePathRecursive(srvsLeft, min, max, tempDist + previousDist,
-							tmpSrv, ret)) {
+		} else {
+			tmpDist = locals.getTravelTimeBetween(tmpSrv->getLocal(),
+					lastSrv->getLocal());
+
+			nMax = tmpSrv->getArrivalTime() - tmpDist - previousDist;
+			nMin = absSoonerTime(tmpSrv);
+			if (nMin <= nMax) {
+				nMax = nMax < (max - tmpDist) ? nMax : (max - tmpDist);
+				nMin = nMin > (min - tmpDist) ? nMin : (min - tmpDist);
+				if (nMin <= nMax) { // Possible to explore
+					if (calcSimplePathRecursive(srvsLeft, nMin, nMax,
+							tmpDist + previousDist, tmpSrv, ret)) {
 						ret.push(tmpSrv);
 						return true;
 					}
@@ -121,13 +118,13 @@ bool TransfersSystem::calcSimplePath(std::vector<Service *> services2plane,
 	ret.empty(); // ensuring that the queue is empty
 	return calcSimplePathRecursive(services2plane, 0, 0, 0, NULL, ret);
 }
-
-
-
-bool TransfersSystem::calcComplexPathRecursive(std::vector<Service *> & srvsLeft,
-		unsigned min, unsigned max, unsigned previousDist, unsigned previousStck,
-		Service * lastSrv, std::queue<Service *> & ret) {
-
+unsigned x = 0;
+bool TransfersSystem::calcComplexPathRecursive(
+		std::vector<Service *> & srvsLeft, unsigned min, unsigned max,
+		unsigned previousDist, unsigned previousStck, Service * lastSrv,
+		std::queue<Service *> & ret) {
+	x++;
+	std::cout << x << endl;
 	if (srvsLeft.size() == 0)  // 1. if N is a goal state/node, return “success”
 		return true;
 
@@ -141,48 +138,55 @@ bool TransfersSystem::calcComplexPathRecursive(std::vector<Service *> & srvsLeft
 	for (std::vector<Service *>::iterator it = clnServices.begin(); //3. for each successor/child C of N,
 	it != clnServices.end(); it++) {
 		//3.1. (if appropriate) set new state
-		tmpSrv = popService(srvsLeft,it);
+		tmpSrv = popService(srvsLeft, it);
 
 		//3.2. explore state/node C
 		//3.3. if exploration was successful, return “success”
 
 		if (lastSrv == NULL) {
 			tmpDist = locals.getBestTravelTime(tmpSrv->getLocal());
-			if (calcSimplePathRecursive(srvsLeft, absSoonerTime(tmpSrv),
-					absLatterTime(tmpSrv), tmpDist, tmpSrv, ret)) {
+			if (calcComplexPathRecursive(srvsLeft, absSoonerTime(tmpSrv),
+					absLatterTime(tmpSrv), tmpDist, tmpSrv->getPeopleQuantity(),
+					tmpSrv, ret)) {
 				ret.push(tmpSrv);
 				return true;
 			}
 		} else {
-			if ((*it)->getPeopleQuantity() + previousStck <= busStocking) {
-				tmpDist = locals.getTravelTimeBetween(lastSrv->getLocal(),
-						(*it)->getLocal());
+			if (tmpSrv->getPeopleQuantity() + previousStck <= busStocking) {
+				tmpDist = locals.getTravelTimeBetween(tmpSrv->getLocal(),
+						lastSrv->getLocal());
 
-				nMax = (*it)->getArrivalTime() - tmpDist - previousDist;
-				nMin = absSoonerTime(*it);
-				if (nMin < nMax) {
-					nMax = nMax < max - previousDist ? nMax : max - previousDist;
-					nMin = nMin > min - previousDist ? nMin : min - previousDist;
-					if (nMin < nMax) { // Possible to explore
-						if (calcComplexPathRecursive(srvsLeft, min, max,
+				nMax = tmpSrv->getArrivalTime() - tmpDist - previousDist;
+				nMin = absSoonerTime(tmpSrv);
+				if (nMin <= nMax) {
+					nMax = nMax < (max - tmpDist) ? nMax : (max - tmpDist);
+					nMin = nMin > (min - tmpDist) ? nMin : (min - tmpDist);
+					if (nMin <= nMax) { // Possible to explore
+						if (calcComplexPathRecursive(srvsLeft, nMin, nMax,
 								tmpDist + previousDist,
-								(*it)->getPeopleQuantity() + previousStck,
+								tmpSrv->getPeopleQuantity() + previousStck,
 								tmpSrv, ret)) {
 							ret.push(tmpSrv);
 							return true;
 						}
 					}
+
 				}
+
 			}
 		}
 
 		//3.4 (if step 3.1 was performed) restore previous state
 		srvsLeft.push_back(tmpSrv);
 
-		// tries to drop people.
-		previousDist = locals.getBestTravelTime(lastSrv->getLocal());
-		if (calcComplexPathRecursive(srvsLeft, min - previousDist, max - previousDist, 0, 0,
-				dropPeople, ret)) {
+	}
+	// tries to drop people.
+	if (lastSrv != NULL && !(*lastSrv == *dropPeople)) {
+		tmpDist = locals.getBestTravelTime(lastSrv->getLocal());
+		cout <<  lastSrv->getArrivalTime() << endl;
+
+		if (calcComplexPathRecursive(srvsLeft, INT_MIN, max - tmpDist, 0,
+				0, dropPeople, ret)) {
 			ret.push(dropPeople);
 			return true;
 		}
@@ -193,14 +197,21 @@ bool TransfersSystem::calcComplexPathRecursive(std::vector<Service *> & srvsLeft
 
 }
 
+bool TransfersSystem::calcComplexPath(std::vector<Service *> services,
+		std::queue<Service *> & ret) {
+	for (std::vector<Service *>::iterator it = services.begin();
+			it != services.end(); it++) {
+		if (busStocking < (*it)->getPeopleQuantity()) {
+			return false;
+		}
+	}
 
-std::vector<std::vector<Service *> > TransfersSystem::calcComplexPath(
-		std::vector<Service *> services) {
-
+	return calcComplexPathRecursive(services, 0, 0, 0, 0, NULL, ret);
 }
 
-
 bool TransfersSystem::addDataFromFile(std::string filename) {
+	clearData();
+
 	string line;
 	std::vector<std::string> data;
 	unsigned state = 0;
@@ -210,50 +221,69 @@ bool TransfersSystem::addDataFromFile(std::string filename) {
 
 	if (myfile.is_open()) {
 		while (getline(myfile, line)) {
-
 			if (line.substr(0, 5) == "Local") {
 				state = 1;
-				break;
 			} else if (line.substr(0, 8) == "Distance") {
 				state = 2;
-				break;
+
 			} else if (line.substr(0, 7) == "Service") {
 				state = 3;
-				break;
-			}
+			} else {
+				data = TextUserInterface::strsplit(line, ";");
 
-			data = TextUserInterface::strsplit(line, ";");
+				switch (state) {
+				case 1: // reading Locals
+					if (data.size() == 1 && line != "") {
+						locs.push_back(new Local(data[0]));
+						locals.addVertex(locs[locs.size() - 1]);
+						//cout << locs.size() << " | " << line << endl;
+						locals.getVertex(locs[locs.size() - 1])->addEdge(
+								locals.getVertex(locs[locs.size() - 1]), 0);
+					} else {
+						if (line != "") {
+							locals.resetMap();
+							return false;
+						}
+					}
+					break;
+				case 2: // reading Distances
+					if (data.size() == 3) {
 
-			switch (state) {
-			case 1: // reading Locals
-				if (data.size() == 1) {
-					locs.push_back(new Local(data[0]));
-					locals.addVertex(locs.front());
-					locals.getVertex(locs.front())->addEdge(
-							locals.getVertex(locs.front()), 0);
+						locals.getVertex(locs[atoi(data[0].c_str())])->addEdge(
+								locals.getVertex(locs[atoi(data[1].c_str())]),
+								(double) atoi(data[2].c_str()));
+						locals.getVertex(locs[atoi(data[1].c_str())])->addEdge(
+								locals.getVertex(locs[atoi(data[0].c_str())]),
+								(double) atoi(data[2].c_str()));
+					} else {
+						if (line != "") {
+							locals.resetMap();
+							return false;
+						}
+					}
+					break;
+				case 3: // reading Services
+					if (data.size() == 3) {
+						services.push_back(
+								new Service(atoi(data[1].c_str()),
+										atoi(data[2].c_str()),
+										locs[atoi(data[0].c_str())]));
+					} else {
+						if (line != "") {
+							locals.resetMap();
+							return false;
+						}
+					}
+					break;
 				}
-				break;
-			case 2: // reading Distances
-				if (data.size() == 3) {
-					locals.getVertex(locs[atoi(data[0].c_str())])->addEdge(
-							locals.getVertex(locs[atoi(data[1].c_str())]),
-							(double) atoi(data[2].c_str()));
-					locals.getVertex(locs[atoi(data[1].c_str())])->addEdge(
-							locals.getVertex(locs[atoi(data[0].c_str())]),
-							(double) atoi(data[2].c_str()));
-				}
-				break;
-			case 3: // reading Services
-				if (data.size() == 3) {
-					services.push_back(
-							*new Service(atoi(data[1].c_str()),
-									atoi(data[2].c_str()),
-									locs[atoi(data[0].c_str())]));
-				}
-				break;
+
 			}
 
 		}
 		myfile.close();
+		dropPeople = new Service(0, 0, locals.getAirportLocal());
+
+	} else {
+		return false;
 	}
 }

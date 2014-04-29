@@ -1,16 +1,156 @@
 Local (id_localizacao, morada)
-Aeroporto Francisco Sá Carneiro, 4470-558 Maia
-Faculdade de Engenharia da Universidade do Porto, 
-Rua Doutor Roberto Frias, 4200-465 Porto
-Rua da Cerca, 454-4150 Porto
-Rua Fernão Lopes, 409-4150 Porto
+Aeroporto Francisco Sa Carneiro, 4470-558 Maia
+HF Tuela Ala Sul, Rua Arquitecto Marques da Silva 154, 4150-483 Porto
+HF IPANEMA PARK, Rua Serralves 124, 4150-125 Porto
+InterContinental Porto - Palacio Das Cardosas, Praça da Liberdade 25, 4000-322 Porto
+Hotel Star inn, Rua Senhora Porto 930, 4250-453 Porto
+Hotel Ibis Porto Sao Joao, Rua Doutor Placido da Costa, 4200-450 Porto
+Tiara Park Atlantic Porto, Avenida da Boavista 1466, 4100-114 Porto
+Hotel Douro ***, Rua da Meditacao 71, 4150-487 Oporto
+Hotel Estoril Porto, Rua de Cedofeita 193, 4050-179 Porto
+Mercure Porto Centro Hotel, Praca da Batalha 116, 4049-028 Porto
+Hotel-nave, Avenida Fernao de Magalhaes 247, 4300 Porto
+Hotel do Norte, Rua Fernandes Tomas, 579, 4000-447 Porto
+Tryp Porto Expo Hotel, Rotunda da Exponor - Leça da Palmeira, 4450-801 Porto
+CASA BRANCA BEACH & GOLF HOTEL, Rua Belgica 86 Praia de Lavadores, 4400-044 Vila Nova de Gaia
+Hotel Premium Porto, Travessa Antero de Quental 360, 4000-087 Porto
+Quality Inn Portus Cale Hotel, Avenida da Boavista 1060, 4100-113 Porto
 
 Distance (localizacao1, localizacao2, distancia - minutos )
-1;4;16
-1;2;15
-1;3;17
+0;1;15
+0;2;12
+0;3;20
+0;4;14
+0;5;15
+0;6;15
+0;7;14
+0;8;20
+0;9;21
+0;10;16
+0;11;19
+0;12;8
+0;13;20
+0;14;16
+0;15;14
+1;2;5
+1;3;7
+1;4;8
+1;5;11
+1;6;6
+1;7;5
+1;8;10
+1;9;11
+1;10;12
+1;11;11
+1;12;10
+1;13;11
+1;14;9
+1;15;5
+2;3;12
+2;4;11
+2;5;13
+2;6;9
+2;7;8
+2;8;14
+2;9;15
+2;10;14
+2;11;17
+2;12;12
+2;13;14
+2;14;12
+2;15;8
+3;4;10
+3;5;9
+3;6;9
+3;7;8
+3;8;4
+3;9;3
+3;10;8
+3;11;5
+3;12;14
+3;13;16
+3;14;5
+3;15;8
+4;5;9
+4;6;8
+4;7;9
+4;8;12
+4;9;15
+4;10;10
+4;11;12
+4;12;12
+4;13;15
+4;14;8
+4;15;10
+5;6;11
+5;7;9
+5;8;11
+5;9;14
+5;10;9
+5;11;11
+5;12;11
+5;13;15
+5;14;7
+5;15;10
+6;7;5
+6;8;12
+6;9;14
+6;10;11
+6;11;12
+6;12;8
+6;13;12
+6;14;8
+6;15;5
+7;8;10
+7;9;13
+7;10;12
+7;11;11
+7;12;11
+7;13;13
+7;14;8
+7;15;2
+8;9;8
+8;10;9
+8;11;6
+8;12;15
+8;13;17
+8;14;5
+8;15;9
+9;10;9
+9;11;5
+9;12;15
+9;13;16
+9;14;6
+9;15;9
+10;11;3
+10;12;16
+10;13;20
+10;14;8
+10;15;12
+11;12;14
+11;13;17
+11;14;5
+11;15;9
+12;13;15
+12;14;11
+12;15;9
+13;14;17
+13;15;14
+14;15;8
 
-
-Service (partida_id->Local, nr passageiros,hora(hora*60+minutos) );
-0;20;23400
-2;13;15:30
+Service (partida_id->Local, nr passageiros,dropoff(hora*60+minutos) );
+1;10;810
+2;5;930
+3;4;870
+4;12;800
+5;3;1000
+6;15;880
+7;5;700
+8;1;1060
+9;9;950
+10;6;750
+11;7;990
+12;11;765
+13;5;900
+14;2;820
+15;9;880

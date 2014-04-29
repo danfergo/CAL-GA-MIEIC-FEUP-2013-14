@@ -140,22 +140,46 @@
  }
  */
 
-TextUserInterface tui("Tema 6: Planemanento de Transfers", 70, 13);
+TextUserInterface tui("Tema 6: Planemanento de Transfers", 70, 15);
+TransfersSystem ts(60,30);
+void readDataFile() {
+	string loc = tui.print(
+			"O ficheiro deve seguir o seguinte formato: \n\n"
+			"Local \n"
+			"morada_do_local \n"
+			"morada_do_local \n"
+			"Distance\n"
+			"id_loc;id_loc;distancia\n"
+			"id_loc;id_loc;distancia\n"
+			"Service\n"
+			"id_loc_partida;nr_passageiros;dropoff;\n"
+			"id_loc_partida;nr_passageiros;dropoff;\n\n"
+			"Notas: id_loc é a ordem do nome do local no ficheiro. A distancia \n"
+			"e o dropoff em minutos."
+			"",TextUserInterface::LEFT,"Introduza a localização do ficheiro:");
+	if(ts.addDataFromFile(loc))
+		tui.print("A informação foi importada com sucesso.");
+	else
+		tui.print("Não foi possivel importar o ficheiro desejado.");
+
+}
 
 void mainAppMenu() {
 	unsigned op;
 	while (op = tui.printMenu(
 			"Importar dados \nAlterar Restrições \nSobre \nSair")) {
 		if (op == 1)
+			readDataFile();
+		else if (op == 2)
 			tui.print("Por fazer..");
-		else if(op == 2)
-			tui.print("Por fazer..");
-		else if(op == 3)
-			tui.print("Projeto desenvolvido no ambito da unidade curricular de Concepção e Analise de Algoritos @ Feup @ 2014....");
+		else if (op == 3)
+			tui.print(
+					"Projeto desenvolvido no ambito da unidade curricular de Concepção e Analise de Algoritos @ Feup @ 2014....");
 	}
 }
 
 int main() {
+
 	unsigned op;
 	while (op = tui.printMenu(
 			"Iniciar aplicação \nCorrer testes unitários \nSair")) {

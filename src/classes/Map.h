@@ -15,19 +15,14 @@
 /**
  * Classe Mapa.
  * Representa o mapa de locais segundo um Grafo.
+ * As arestas deste mapa devem onter a distancia temporal mais curta (em minutos) entre os diversos locais.
  */
 class Map : public Graph<Local*> {
-	/**
-	 * Vertice do grafo correspondente ao aeroporto.
-	 * As arestas deste mapa devem onter a distancia temporal mais curta (em minutos) entre os diversos locais.
-	 */
-	Vertex<Local*> * airport;
 public:
 	/**
 	 * Construtor da classe Mapa.
-	 * @param airport local do aeroporto (num caso mais abragente, local de entrega de passageiros).
 	 */
-	Map(Local * airport);
+	Map();
 	/**
 	 * Esta função retorna o tempo, pelo caminho mais curto, entre um determinado local e o aeroporto.
 	 * @param local local a calcular distancia temporal (em minutos)
@@ -47,6 +42,15 @@ public:
 	 * return apontador para aeroporto
 	 */
 	Local * getAirportLocal();
+
+	/**
+	 * Esta funcao elimina todos os vertex do mapa
+	 */
+	void resetMap();
+	/**
+	 * Esta funcao retorna verdadeiro se o mapa contiver locais, retorna falso caso contrário.
+	 */
+	bool isEmpty();
 };
 
 #endif /* MAP_H_ */
