@@ -7,6 +7,10 @@
 
 #include "Local.h"
 
+Local::Local(const Local& l){
+	setName(l.name);
+}
+
 Local::Local(std::string s){
 	setName(s);
 }
@@ -17,7 +21,6 @@ std::string Local::getName() const{
 void Local::setName(std::string n){
 	name = n;
 }
-
 
 bool Local::operator==(const Local & loc) const{
 	return getName() == loc.getName();

@@ -14,6 +14,7 @@ class Local {
 private:
 	std::string name;
 public:
+	Local(const Local& l);
 	Local(std::string);
 
 	std::string getName() const;

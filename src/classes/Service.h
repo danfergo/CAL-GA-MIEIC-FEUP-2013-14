@@ -13,20 +13,14 @@
 
 class Service {
 private:
-	unsigned soonerTime;
-	unsigned laterTime;
-
 	unsigned arrivalTime;
 	Local * local;
 	unsigned peopleQuantity;
 public:
-	Service(unsigned peopleQuantity, unsigned arrival, Local * local, Map * map);
+	Service(unsigned peopleQuantity, unsigned arrival, Local * local);
 	bool operator==(const Service & s) const;
 
-	unsigned getSoonerTime() const;
-	unsigned getLaterTime() const;
 	unsigned getArrivalTime() const;
-
 	unsigned getPeopleQuantity() const;
 	Local * getLocal() const;
 };
