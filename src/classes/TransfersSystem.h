@@ -26,7 +26,7 @@ private:
 
 	bool calcSimplePathRecursive(std::vector<Service*>& srvsLeft, int min,
 			int max, unsigned previousDist, Service* lastSrv,
-			std::queue<Service*>& ret) ;
+			std::queue<Service*>& ret);
 	bool calcComplexPathRecursive(std::vector<Service *> & srvsLeft, int min, int max, unsigned dist , unsigned stocking, Service * lastSrv,
 				std::queue<Service *> & ret);
 public:
