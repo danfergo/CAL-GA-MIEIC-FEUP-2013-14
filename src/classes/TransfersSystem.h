@@ -40,7 +40,6 @@ public:
 
 	bool calcComplexPath(
 			std::vector<Service *> services,std::queue<Service *> & ret) ;
-	std::vector<std::vector<std::vector<Service *> > > planTransfers();
 
 	const std::vector<Service *> & getServices() const{
 		return services;
