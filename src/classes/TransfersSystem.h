@@ -26,7 +26,7 @@ private:
 
 	bool calcSimplePathRecursive(std::vector<Service*>& srvsLeft, int min,
 			int max, unsigned previousDist, Service* lastSrv,
-			std::queue<Service*>& ret);
+			std::queue<Service*>& ret, int & firstServiceTime);
 	bool calcComplexPathRecursive(std::vector<Service *> & srvsLeft, int min, int max, unsigned dist , unsigned stocking, Service * lastSrv,
 				std::queue<Service *> & ret);
 public:
@@ -34,7 +34,7 @@ public:
 	bool addDataFromFile(std::string filename);
 	void clearData();
 	bool calcSimplePath(std::vector<Service *> services2plan,
-			std::queue<Service *> & ret);
+			std::queue<Service *> & ret, int & firstServiceTime);
 	unsigned absSoonerTime(Service *);
 	unsigned absLatterTime(Service *);
 

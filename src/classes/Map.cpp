@@ -10,7 +10,7 @@
 Map::Map() {
 }
 
-unsigned Map::getBestTravelTime(Local *v) {
+unsigned Map::getBestTravelTime(Local *v) const{
 	unsigned i;
 	for (i = 0; i < vertexSet.size(); i++) {
 		if ((vertexSet[i]->getInfo()) == v) {
@@ -24,7 +24,7 @@ unsigned Map::getBestTravelTime(Local *v) {
 	return this->edgeCost(i, 0);
 }
 
-unsigned Map::getTravelTimeBetween(Local * v1, Local * v2) {
+unsigned Map::getTravelTimeBetween(Local * v1, Local * v2) const {
 	std::vector<Edge<Local*> > edges = getVertex(v1)->getAdj();
 
 	for (std::vector<Edge<Local* > >::iterator itt = edges.begin();
@@ -37,7 +37,7 @@ unsigned Map::getTravelTimeBetween(Local * v1, Local * v2) {
 	return INT_MAX;
 }
 
-Local * Map::getAirportLocal(){
+Local * Map::getAirportLocal() const{
 	if(vertexSet.size() == 0)
 		return NULL;
 	return this->vertexSet[0]->getInfo();

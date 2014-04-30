@@ -140,8 +140,8 @@
  }
  */
 
-TextUserInterface tui("Tema 6: Planemanento de Transfers", 70, 15);
-TransfersSystem ts(60, 30);
+TextUserInterface tui("Tema 6: Planemanento de Transfers", 120, 30);
+TransfersSystem ts(20, 30);
 void readDataFile() {
 	string loc =
 			tui.print(
@@ -204,14 +204,18 @@ void mainAppMenu() {
 	bool r;
 	stringstream s;
 	queue<Service *> ret;
+	int firstServiceTime;
 	while (op =
 			tui.printMenu(
 					"Importar dados \nPlanear Serviços com caminho simples \nPlanear Serviços com caminho complexo  \nAlterar Restrições \nSobre \nVoltar ao menu anterior")) {
 		if (op == 1)
 			readDataFile();
 		else if (op == 2) {
-			if (ts.calcSimplePath(ts.getServices(), ret)) {
+			if (ts.calcSimplePath(ts.getServices(), ret,firstServiceTime)) {
 				s.str("");
+				ts.getMap().getAirportLocal()->getName();
+
+				s << firstServiceTime << endl;
 				while (!ret.empty()) {
 					s << ret.front()->getLocal()->getName() << "\n";
 					ret.pop();
@@ -221,10 +225,10 @@ void mainAppMenu() {
 				tui.print(
 						"Não foi possivel calcular um caminho para os serviços existentes");
 		} else if (op == 3) {
-			if (ts.calcSimplePath(ts.getServices(), ret)) {
+			if (ts.calcComplexPath(ts.getServices(), ret)) {
 				s.str("");
 				while (!ret.empty()) {
-					s << ret.front()->getLocal()->getName() << "\n";
+					s <<ret.front()->getPeopleQuantity() << "|" << ret.front()->getLocal()->getName() << "\n";
 					ret.pop();
 				}
 				tui.print(s.str());

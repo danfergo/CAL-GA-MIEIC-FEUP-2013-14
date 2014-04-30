@@ -25,7 +25,8 @@ void testCalcSimplePath() {
 			"C:\\Users\\Daniel\\eclipse\\Transferes\\src\\teste_unitario_1.csv");
 
 	queue<Service *> ret;
-	ASSERT_EQUAL(true, transSys.calcSimplePath(transSys.getServices(), ret));
+	int x;
+	ASSERT_EQUAL(true, transSys.calcSimplePath(transSys.getServices(), ret,x ));
 }
 
 void testCalcComplexPath() {

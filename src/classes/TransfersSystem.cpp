@@ -47,10 +47,12 @@ Service * popService(std::vector<Service *> & vec2search,
 }
 bool TransfersSystem::calcSimplePathRecursive(std::vector<Service *> & srvsLeft,
 		int min, int max, unsigned previousDist, Service * lastSrv,
-		std::queue<Service *> & ret) {
+		std::queue<Service *> & ret, int & firstServiceTime) {
 
-	if (srvsLeft.size() == 0) // 1. if N is a goal state/node, return “success”
+	if (srvsLeft.size() == 0) { // 1. if N is a goal state/node, return “success”
+		firstServiceTime = max;
 		return true;
+	}
 
 	// 2. (optional) if N is a leaf state/node, return “failure”
 
@@ -69,7 +71,8 @@ bool TransfersSystem::calcSimplePathRecursive(std::vector<Service *> & srvsLeft,
 
 			tmpDist = locals.getBestTravelTime(tmpSrv->getLocal());
 			if (calcSimplePathRecursive(srvsLeft, absSoonerTime(tmpSrv),
-					absLatterTime(tmpSrv), tmpDist, tmpSrv, ret)) {
+					absLatterTime(tmpSrv), tmpDist, tmpSrv, ret,
+					firstServiceTime)) {
 				ret.push(tmpSrv);
 				return true;
 			}
@@ -85,7 +88,8 @@ bool TransfersSystem::calcSimplePathRecursive(std::vector<Service *> & srvsLeft,
 				nMin = nMin > (min - tmpDist) ? nMin : (min - tmpDist);
 				if (nMin <= nMax) { // Possible to explore
 					if (calcSimplePathRecursive(srvsLeft, nMin, nMax,
-							tmpDist + previousDist, tmpSrv, ret)) {
+							tmpDist + previousDist, tmpSrv, ret,
+							firstServiceTime)) {
 						ret.push(tmpSrv);
 						return true;
 					}
@@ -105,9 +109,9 @@ bool TransfersSystem::calcSimplePathRecursive(std::vector<Service *> & srvsLeft,
 }
 
 bool TransfersSystem::calcSimplePath(std::vector<Service *> services2plane,
-		std::queue<Service *> & ret) {
+		std::queue<Service *> & ret, int & firstServiceTime) {
 
-	if(locals.getNumVertex() == 0)
+	if (locals.getNumVertex() == 0)
 		return false;
 
 	unsigned stocking = 0;
@@ -120,7 +124,8 @@ bool TransfersSystem::calcSimplePath(std::vector<Service *> services2plane,
 		return false;
 
 	ret.empty(); // ensuring that the queue is empty
-	return calcSimplePathRecursive(services2plane, 0, 0, 0, NULL, ret);
+	return calcSimplePathRecursive(services2plane, 0, 0, 0, NULL, ret,
+			firstServiceTime);
 }
 
 bool TransfersSystem::calcComplexPathRecursive(
@@ -186,8 +191,8 @@ bool TransfersSystem::calcComplexPathRecursive(
 	// tries to drop people.
 	if (lastSrv != NULL && !(*lastSrv == *dropPeople)) {
 		tmpDist = locals.getBestTravelTime(lastSrv->getLocal());
-		if (calcComplexPathRecursive(srvsLeft, -999999, max - tmpDist, 0,
-				0, dropPeople, ret)) {
+		if (calcComplexPathRecursive(srvsLeft, -999999, max - tmpDist, 0, 0,
+				dropPeople, ret)) {
 			ret.push(dropPeople);
 			return true;
 		}
@@ -200,7 +205,7 @@ bool TransfersSystem::calcComplexPathRecursive(
 
 bool TransfersSystem::calcComplexPath(std::vector<Service *> services,
 		std::queue<Service *> & ret) {
-	if(locals.getNumVertex() == 0)
+	if (locals.getNumVertex() == 0)
 		return false;
 
 	for (std::vector<Service *>::iterator it = services.begin();

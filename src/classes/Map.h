@@ -28,20 +28,20 @@ public:
 	 * @param local local a calcular distancia temporal (em minutos)
 	 * @return distancia temporal (em minutos)
 	 */
-	unsigned getBestTravelTime(Local  *local);
+	unsigned getBestTravelTime(Local  *local) const;
 	/**
 	 * Esta função calcula o tempo, pelo caminho mais curto, entre dois determinados determinados locais do mapa.
 	 * @param local1 um dos locais
 	 * @param local2 outro dos dois locais
 	 * @return distancia temporal entre os dois locais (em minutos)
 	 */
-	unsigned getTravelTimeBetween(Local *local1, Local *local2);
+	unsigned getTravelTimeBetween(Local *local1, Local *local2) const;
 
 	/**
 	 * Esta função retorna um apontador para o local do Aeroporto
 	 * return apontador para aeroporto
 	 */
-	Local * getAirportLocal();
+	Local * getAirportLocal() const;
 
 	/**
 	 * Esta funcao elimina todos os vertex do mapa

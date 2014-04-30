@@ -244,7 +244,7 @@ public:
 	void bellmanFordShortestPath(const T &s);
 	void dijkstraShortestPath(const T &s);
 	void floydWarshallShortestPath();
-	int edgeCost(int vOrigIndex, int vDestIndex);
+	int edgeCost(int vOrigIndex, int vDestIndex) const;
 	vector<T> getfloydWarshallPath(const T &origin, const T &dest);
 	void getfloydWarshallPathAux(int index1, int index2, vector<T> & res);
 
@@ -746,7 +746,7 @@ void Graph<T>::dijkstraShortestPath(const T &s) {
 }
 
 template<class T>
-int Graph<T>::edgeCost(int vOrigIndex, int vDestIndex)
+int Graph<T>::edgeCost(int vOrigIndex, int vDestIndex) const
 {
 	if(vertexSet[vOrigIndex] == vertexSet[vDestIndex])
 		return 0;
